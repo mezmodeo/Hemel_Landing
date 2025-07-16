@@ -1,0 +1,272 @@
+    <title>Hemel - Немецкая защита дерева</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes marquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Move by half the width for seamless loop */
+        }
+        #review-ticker-content {
+            display: flex; /* Use flexbox for the inner spans */
+        }
+        /* Плавный переход для мобильного меню */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #16a34a !important; /* Green-600 */
+        }
+        .swiper-button-next, .swiper-button-prev {
+            background-color: rgba(22, 163, 74, 0.8); /* semi-transparent green */
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            color: white !important;
+            animation: pulse 2s infinite;
+        }
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 20px !important;
+            font-weight: bold;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Zoomer Styles */
+        .zoom-pane {
+            position: absolute;
+            top: 0;
+            left: 105%; /* Position it to the right of the container */
+            width: 300px; /* Adjust as needed */
+            height: 300px; /* Adjust as needed */
+            border: 1px solid #ccc;
+            background-repeat: no-repeat;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+            pointer-events: none; /* So it doesn't interfere with mouse events */
+            border-radius: 50%; /* Make it round */
+        }
+        .img-zoom-lens {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            width: 80px; /* Adjust as needed */
+            height: 80px; /* Adjust as needed */
+            background-color: rgba(255,255,255,0.4);
+            pointer-events: none;
+            border-radius: 50%; /* Make it round */
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+
+    <header class="fixed top-0 left-0 right-0 z-30">
+        <nav class="flex justify-between items-center px-6 h-24 py-4" style="background-color: rgba(32, 119, 45, 0.52);">
+            <!-- Logo, Desktop Menu, Mobile Button -->
+            <div>
+                <img src="/images/Logo1.png" alt="Hemel Logo" class="w-32 h-auto">
+            </div>
+            <ul class="hidden md:flex items-center justify-center flex-grow gap-x-8 lg:gap-x-12">
+                <li><a href="#" class="text-white hover:text-gray-200 font-bold">Каталог</a></li>
+                <li><a href="#" class="text-white hover:text-gray-200 font-bold">Калькулятор расхода</a></li>
+                <li><a href="#" class="text-white hover:text-gray-200 font-bold">Контакты</a></li>
+            </ul>
+            <div class="md:hidden flex items-center">
+                <button id="menu-btn" class="text-white focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+            <div class="hidden md:flex w-32"></div>
+        </nav>
+    </header>
+
+    <!-- Review Ticker -->
+    <div id="review-ticker-container" class="fixed left-0 right-0 z-20 overflow-hidden bg-white bg-opacity-10 backdrop-blur-sm py-3" style="top: 96px;">
+        <div id="review-ticker-content" class="text-white">
+            <!-- JS will populate this with two spans -->
+        </div>
+    </div>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-95 z-50 flex flex-col items-center justify-center">
+        <button id="close-menu-btn" class="absolute top-8 right-8 text-white text-4xl">&times;</button>
+        <a href="#" class="text-white text-2xl font-bold my-4">Каталог</a>
+        <a href="#" class="text-white text-2xl font-bold my-4">Калькулятор расхода</a>
+        <a href="#" class="text-white text-2xl font-bold my-4">Контакты</a>
+    </div>
+
+    <!-- Основной блок с фоном -->
+    <div class="relative min-h-screen flex flex-col justify-center bg-cover bg-center" style="background-image: url('/images/hero-background.jpg'); padding-top: 140px;"> <!-- Pushed down by header + ticker -->
+        
+        <!-- Hero Content -->
+        <main class="flex-grow flex items-center justify-center">
+            <div class="relative z-10 text-center text-white max-w-4xl px-4">
+                <h1 class="text-4xl md:text-6xl font-extrabold">Профессиональная краска должна решать, а не закрашивать проблему</h1>
+                <p class="mt-4 text-lg md:text-2xl">Забудьте о грибке, трещинах и ежегодных ремонтах вместе с Hemel. Получите персональную рекомендацию от нашего AI-консультанта за 30 секунд.</p>
+                <button class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl inline-flex items-center transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Подобрать защиту с ИИ за 30 секунд
+                </button>
+            </div>
+        </main>
+        
+        <!-- Overlay for contrast -->
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+
+    </div>
+
+    <!-- Products Section -->
+    <section class="bg-white py-16 sm:py-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Торговая линейка Hemel</h2>
+            <div id="products-container" class="swiper-container product-slider relative">
+                <div class="swiper-wrapper">
+                    <!-- Card 1: Stain (Originally Card 2) -->
+                    <div class="swiper-slide">
+                        <div class="product-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col items-center" data-product-id="wood-stain" data-title="HEMEL Wood Stain — лазурь для древесины" data-image="/images/Banka2.png">
+                            <img src="/images/Banka2.png" alt="HEMEL Wood Stain" class="h-48 w-auto object-contain mb-4">
+                            <h3 class="text-xl font-semibold text-gray-800">HEMEL Wood Stain</h3>
+                            <p class="text-gray-500 mb-4">— лазурь для древесины</p>
+                            <button class="view-specs-btn mt-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 w-full">Посмотреть характеристики</button>
+                        </div>
+                    </div>
+                    <!-- Card 2: Oil (Originally Card 1) -->
+                    <div class="swiper-slide">
+                        <div class="product-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col items-center" data-product-id="deck-oil" data-title="HEMEL Deck Oil — масло для террас" data-image="/images/Banka1.png">
+                            <img src="/images/Banka1.png" alt="HEMEL Aqua Wood Stao " class="h-48 w-auto object-contain mb-4">
+                            <h3 class="text-xl font-semibold text-gray-800">HEMEL Deck Oil</h3>
+                            <p class="text-gray-500 mb-4">— масло для террас</p>
+                            <button class="view-specs-btn mt-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 w-full">Посмотреть характеристики</button>
+                        </div>
+                    </div>
+                    <!-- Card 3: Paint -->
+                    <div class="swiper-slide">
+                        <div class="product-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col items-center" data-product-id="breather-paint" data-title="HEMEL Aqua Breather Paint — краска для древесины" data-image="/images/Banka3.png">
+                            <img src="/images/Banka3.png" alt="HEMEL Aqua Breather Paint" class="h-48 w-auto object-contain mb-4">
+                            <h3 class="text-xl font-semibold text-gray-800">HEMEL Aqua Breather Paint</h3>
+                            <p class="text-gray-500 mb-4">— краска для древесины</p>
+                            <button class="view-specs-btn mt-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 w-full">Посмотреть характеристики</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Pagination for mobile -->
+                <div class="swiper-pagination lg:hidden"></div>
+
+                <!-- Add Navigation -->
+                <div class="swiper-button-next lg:hidden"></div>
+                <div class="swiper-button-prev lg:hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="scripts/main.js"></script>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+        <!-- Modal Window -->
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl h-full max-h-[90vh] flex flex-row relative">
+            <!-- Close Button -->
+            <button id="modal-close-btn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-3xl z-10">&times;</button>
+            
+            <!-- Left Column: Main Image & Hover Preview -->
+            <div class="w-1/2 p-8 flex flex-col items-center justify-center">
+                <!-- Main product image -->
+                <img id="modal-main-image" src="" alt="Product Image" class="max-w-full max-h-[55vh] object-contain mb-4">
+                
+                <!-- Container for the selected color preview on hover, managed by JS -->
+                <div id="hover-preview-container" class="invisible text-center w-full h-48">
+                    <img id="hover-preview-image" src="" alt="Selected color preview" class="max-w-full max-h-40 mx-auto rounded-lg border">
+                    <p id="hover-preview-name" class="text-gray-700 font-semibold mt-2 text-sm"></p>
+                </div>
+            </div>
+
+            <!-- Right Column: Details -->
+            <div class="w-1/2 px-8 py-6 bg-gray-50 flex flex-col overflow-y-auto">
+                <h3 id="modal-title" class="text-3xl font-bold text-gray-800 mb-4"></h3>
+                
+                <p id="color-select-prompt" class="text-gray-600 mb-2">Выберите цвет:</p>
+                <div id="modal-color-palette" class="flex flex-wrap gap-3 mb-4">
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 border-2 border-transparent" data-description="1000H Бесцветная база"></div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1011H Белый" data-preview-img="images_1aws/1aws1.png">
+                        <img src="images_aws/aws1.png" alt="Color 1" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1012H Махагон" data-preview-img="images_1aws/1aws2.png">
+                        <img src="images_aws/aws2.png" alt="Color 2" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1013H Американский орех" data-preview-img="images_1aws/1aws3.png">
+                        <img src="images_aws/aws3.png" alt="Color 3" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1014H Груша" data-preview-img="images_1aws/1aws4.png">
+                        <img src="images_aws/aws4.png" alt="Color 4" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1015H Бук" data-preview-img="images_1aws/1aws5.png">
+                        <img src="images_aws/aws5.png" alt="Color 5" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1016H Дуб" data-preview-img="images_1aws/1aws6.png">
+                        <img src="images_aws/aws6.png" alt="Color 6" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1017H Венге" data-preview-img="images_1aws/1aws7.png">
+                        <img src="images_aws/aws7.png" alt="Color 7" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                    <div class="color-swatch w-12 h-12 bg-gray-200 rounded-md cursor-pointer hover:opacity-75 flex items-center justify-center border-2 border-transparent" data-description="1018H Серая платина" data-preview-img="images_1aws/1aws8.png">
+                        <img src="images_aws/aws8.png" alt="Color 8" class="w-full h-full object-contain rounded-md pointer-events-none">
+                    </div>
+                </div>
+
+                <!-- Packaging Options -->
+                <div class="mt-6">
+                    <button id="packaging-accordion-header" class="w-full flex justify-between items-center text-left lg:pointer-events-none">
+                        <p class="text-gray-600 mb-2">Выберите фасовку:</p>
+                        <span id="packaging-selection-text" class="font-semibold text-gray-800 ml-2"></span>
+                        <svg class="chevron-icon w-5 h-5 transition-transform transform lg:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div id="packaging-options-container" class="hidden lg:block mt-2">
+                        <div id="packaging-options" class="flex flex-wrap gap-3">
+                            <!-- Packaging buttons are now generated by scripts/main.js -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quantity and Add to Cart -->
+                <div class="mt-8 flex flex-col items-center sm:items-start w-full">
+                    <div class="flex items-center w-full gap-2 sm:gap-4">
+                        <!-- Quantity Selector -->
+                        <div class="flex items-center border border-gray-300 rounded-lg">
+                            <button id="quantity-minus" class="px-2 sm:px-3 py-2 text-sm sm:text-base font-bold text-gray-600 hover:bg-gray-100 rounded-l-lg transition">-</button>
+                            <span id="quantity-value" class="px-3 sm:px-4 py-2 text-sm sm:text-base font-semibold text-gray-800">1</span>
+                            <button id="quantity-plus" class="px-2 sm:px-3 py-2 text-sm sm:text-base font-bold text-gray-600 hover:bg-gray-100 rounded-r-lg transition">+</button>
+                        </div>
+                        <!-- Add to Cart Button -->
+                        <button id="add-to-cart-btn" class="flex-grow bg-green-600 hover:bg-green-700 text-white font-bold p-3 rounded-lg text-base sm:text-lg inline-flex items-center justify-center transition duration-300 active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 sm:mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span class="hidden sm:inline">В корзину</span>
+                        </button>
+                    </div>
+                    <!-- Total Price -->
+                    <div id="total-price" class="mt-4 text-2xl sm:text-3xl font-bold text-green-600"></div>
+                </div>
+                
+                <div class="mt-auto border-t pt-6">
+                    <h4 class="text-xl font-semibold text-gray-700 mb-4">Другие продукты</h4>
+                    <div class="nested-slider swiper-container relative">
+                        <div class="swiper-wrapper" id="nested-slider-wrapper">
+                            <!-- Other products will be generated by JS -->
+                        </div>
+                        <div class="swiper-button-next nested-next"></div>
+                        <div class="swiper-button-prev nested-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
